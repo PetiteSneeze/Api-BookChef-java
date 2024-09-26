@@ -2,6 +2,8 @@ package com.bookchef2.bookchef2.Models;
 
 import java.util.List;  // Correta importação do java.util.List
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -25,6 +27,7 @@ public class Usuarios {
     private String email;
     private String senha;
 
+    @JsonIgnore
     // Relacionamento OneToMany entre Usuario e Receitas
     @OneToMany(mappedBy = "usuario") 
     private List<Receitas> receitas; 

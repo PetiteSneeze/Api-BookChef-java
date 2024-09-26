@@ -58,7 +58,7 @@ public class ReceitasController {
         }
     }
 
-    // Atualizar uma receita específica pelo ID
+    // Atualizar uma receita pelo ID
     @PutMapping("/{id}")
     public Receitas atualizarReceita(@PathVariable Long id, @RequestBody Receitas receitaAtualizada) {
         return repository.findById(id)
@@ -72,7 +72,7 @@ public class ReceitasController {
     }
 
     @GetMapping("/detalhes/{id}")
-    public Receitas getDetalhesPorId(@PathVariable Long id) { // Aqui o tipo já é Long, sem necessidade de cast
+    public Receitas getDetalhesPorId(@PathVariable Long id) {
         return repository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Receita não encontrada"));
     }
