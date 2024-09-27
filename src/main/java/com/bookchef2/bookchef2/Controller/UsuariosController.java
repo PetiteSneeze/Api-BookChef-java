@@ -88,13 +88,13 @@ public class UsuariosController {
             .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
 
-    // Método para login com verificação de senha criptografada
+    
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody Usuarios loginRequest) {
         Optional<Usuarios> usuarioOpt = repository.findByEmail(loginRequest.getEmail());
         if (usuarioOpt.isPresent()) {
             Usuarios usuario = usuarioOpt.get();
-            // Verifique a senha criptografada usando BCryptPasswordEncoder
+            
             if (passwordEncoder.matches(loginRequest.getSenha(), usuario.getSenha())) {
                 return ResponseEntity.ok("Login realizado com sucesso!");
             }
