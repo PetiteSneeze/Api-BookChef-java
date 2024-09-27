@@ -1,4 +1,6 @@
 package com.bookchef2.bookchef2.Models;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -24,10 +26,12 @@ public class Receitas {
 
     private String imagemUrl;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "tipo_id")
     private TipoReceitas tipo;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "usuario_id")
     private Usuarios usuario;
