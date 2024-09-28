@@ -28,7 +28,7 @@ public class Usuarios {
     private String senha;
 
     @JsonIgnore
-    // Relacionamento OneToMany entre Usuario e Receitas
+    
     @OneToMany(mappedBy = "usuario") 
     private List<Receitas> receitas; 
 }
