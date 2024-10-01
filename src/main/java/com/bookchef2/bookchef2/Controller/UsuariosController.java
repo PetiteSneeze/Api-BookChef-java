@@ -42,7 +42,7 @@ public class UsuariosController {
 
                 usuario.setNome(usuarioAtualizado.getNome());
                 usuario.setEmail(usuarioAtualizado.getEmail());
-                usuario.setSenha(usuarioAtualizado.getSenha()); 
+                usuario.setSenha(usuarioAtualizado.getSenha()); // Sem criptografia de senha
                 repository.save(usuario);
                 return ResponseEntity.ok("Usuário atualizado com sucesso");
             })
