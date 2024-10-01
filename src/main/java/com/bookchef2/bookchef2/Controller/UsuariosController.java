@@ -30,7 +30,7 @@ public class UsuariosController {
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
 
-    // Método para criar usuário com senha criptografada
+    // esse cria usuário com senha criptografada
     @PostMapping
     public ResponseEntity<String> criarUsuario(@RequestBody Usuarios usuario) {
         Optional<Usuarios> usuarioExistente = repository.findByEmail(usuario.getEmail());
@@ -43,7 +43,7 @@ public class UsuariosController {
         return ResponseEntity.status(HttpStatus.CREATED).body("Usuário criado com sucesso");
     }
 
-    // Método para atualizar usuário, incluindo verificação de duplicidade de e-mail e criptografia de senha
+    // esse serve para atualizar o usuario e valida os emails
     @PutMapping("/{id}")
     public ResponseEntity<String> atualizarUsuario(@PathVariable int id, @RequestBody Usuarios usuarioAtualizado) {
         return repository.findById(id)
@@ -53,7 +53,7 @@ public class UsuariosController {
                     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("E-mail já está em uso por outro usuário");
                 }
 
-                // Atualizar nome, e-mail e senha (criptografada)
+              
                 usuario.setNome(usuarioAtualizado.getNome());
                 usuario.setEmail(usuarioAtualizado.getEmail());
                 usuario.setSenha(passwordEncoder.encode(usuarioAtualizado.getSenha()));
@@ -88,7 +88,7 @@ public class UsuariosController {
             .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
 
-    
+    //login
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody Usuarios loginRequest) {
         Optional<Usuarios> usuarioOpt = repository.findByEmail(loginRequest.getEmail());
