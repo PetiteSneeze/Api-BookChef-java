@@ -63,7 +63,7 @@ public class UsuariosController {
             .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
     }
 
-    // Método para excluir usuário
+    
     @DeleteMapping("/{id}")
     public ResponseEntity<String> excluir(@PathVariable int id) {
         if (repository.existsById(id)) {
@@ -74,13 +74,13 @@ public class UsuariosController {
         }
     }
 
-    // Método para buscar todos os usuários
+  
     @GetMapping
     public ResponseEntity<Iterable<Usuarios>> getSelecionar() {
         return ResponseEntity.ok(repository.findAll());
     }
 
-    // Método para buscar usuário por ID
+    
     @GetMapping("/{id}")
     public ResponseEntity<Usuarios> buscarUsuarioPorId(@PathVariable int id) {
         return repository.findById(id)

@@ -6,10 +6,7 @@ import com.bookchef2.bookchef2.Models.Receitas;
 
 public interface ReceitasRepository extends JpaRepository<Receitas, Long> {
 
-    // Busca receitas por tipo usando o relacionamento ManyToOne com a entidade Tipo
     List<Receitas> findByTipo_Id(Long tipoId);
-
-    // Busca uma receita por ID (opcional, já existe no JpaRepository)
-    Receitas findById(long id);  // Ou você pode usar diretamente JpaRepository's findById que retorna Optional<Receitas>
+    Receitas findById(long id);  
     List<Receitas> findByUsuario_Id(Long usuarioId);
 }

@@ -22,33 +22,28 @@ public class ReceitasController {
     @Autowired
     private ReceitasRepository repository;
 
-      // Buscar todas as receitas, incluindo as de outros usuários
       @GetMapping("/todas")
       public List<Receitas> getTodasReceitas() {
           return repository.findAll();
       }
   
-      // Buscar receitas por usuário
       @GetMapping("/usuario/{usuarioId}")
       public List<Receitas> getReceitasPorUsuario(@PathVariable Long usuarioId) {
           return repository.findByUsuario_Id(usuarioId);
       }
 
-    // Inserir uma nova receita
     @PostMapping
     public Receitas postInserir(@RequestBody Receitas entity) {
         repository.save(entity);
         return entity;
     }
 
-    // Alterar uma receita existente
     @PutMapping
     public Receitas putAlterar(@RequestBody Receitas entity) {
         repository.save(entity);
         return entity;
     }
 
-    // Excluir uma receita pelo ID
     @DeleteMapping("/{id}")
     public void excluir(@PathVariable int id) {
         if (repository.existsById((long) id)) {
@@ -58,7 +53,6 @@ public class ReceitasController {
         }
     }
 
-    // Atualizar uma receita pelo ID
     @PutMapping("/{id}")
     public Receitas atualizarReceita(@PathVariable Long id, @RequestBody Receitas receitaAtualizada) {
         return repository.findById(id)

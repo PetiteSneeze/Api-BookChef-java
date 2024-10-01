@@ -21,21 +21,17 @@ public class TipoReceitaController {
     @Autowired
     private TipoReceitasRepository repository;
 
-    // Criar um novo tipo de receita
     @PostMapping
     public TipoReceitas criarTipoReceita(@RequestBody TipoReceitas tipoReceitas) {
         return repository.save(tipoReceitas);
     }
 
-    // Atualizar um tipo de receita existente
     @PutMapping
     public TipoReceitas putAlterar(@RequestBody TipoReceitas entity) {
         repository.save(entity);
         return entity;
     }
 
-    // Excluir um tipo de receita pelo ID
-    // Excluir uma receita pelo ID
     @DeleteMapping("/{id}")
     public void excluir(@PathVariable int id) {
         if (repository.existsById((long) id)) {
@@ -51,7 +47,6 @@ public class TipoReceitaController {
             .orElseThrow(() -> new RuntimeException("Receita não encontrada"));
     }
 
-    // Selecionar todos os tipos de receita
     @GetMapping
     public Iterable<TipoReceitas> getSelecionar() {
         return repository.findAll();
