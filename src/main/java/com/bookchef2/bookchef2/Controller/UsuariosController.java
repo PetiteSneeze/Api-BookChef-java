@@ -5,17 +5,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-
 import com.bookchef2.bookchef2.Models.Usuarios;
 import com.bookchef2.bookchef2.Repository.UsuarioRepository;
-
 import dto.LoginRequest;
-
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Optional;
 
-@CrossOrigin("*")
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/usuarios")
 public class UsuariosController {
@@ -87,15 +82,15 @@ public class UsuariosController {
         if (usuarioOpt.isPresent()) {
             Usuarios usuario = usuarioOpt.get();
     
-            // Verifica se a senha corresponde com a senha criptografada
+            // Comparar a senha fornecida com a senha criptografada armazenada
             if (passwordEncoder.matches(loginRequest.getSenha(), usuario.getSenha())) {
                 return ResponseEntity.ok("Login realizado com sucesso!");
             } else {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Senha inválida!");
             }
         }
-    
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Usuário não encontrado!");
     }
+    
     
 }
