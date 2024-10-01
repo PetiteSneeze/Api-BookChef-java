@@ -9,7 +9,7 @@ import com.bookchef2.bookchef2.Repository.UsuarioRepository;
 
 import java.util.Optional;
 
-@CrossOrigin(origins = "*")
+@CrossOrigin("*")
 @RestController
 @RequestMapping("/usuarios")
 public class UsuariosController {
