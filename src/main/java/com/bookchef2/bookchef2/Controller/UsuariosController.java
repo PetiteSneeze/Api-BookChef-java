@@ -3,11 +3,10 @@ package com.bookchef2.bookchef2.Controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import com.bookchef2.bookchef2.Models.Usuarios;
 import com.bookchef2.bookchef2.Repository.UsuarioRepository;
-import dto.LoginRequest;
+
 import java.util.Optional;
 
 @CrossOrigin(origins = "*")
@@ -18,10 +17,7 @@ public class UsuariosController {
     @Autowired
     private UsuarioRepository repository;
 
-    @Autowired
-    private BCryptPasswordEncoder passwordEncoder;
-
-    // Criação de usuário com senha criptografada
+    // Criação de usuário sem criptografar a senha
     @PostMapping
     public ResponseEntity<String> criarUsuario(@RequestBody Usuarios usuario) {
         Optional<Usuarios> usuarioExistente = repository.findByEmail(usuario.getEmail());
@@ -29,8 +25,7 @@ public class UsuariosController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Usuário com este e-mail já existe");
         }
 
-        // Criptografar a senha antes de salvar
-        usuario.setSenha(passwordEncoder.encode(usuario.getSenha()));
+        // Salvar o usuário no banco de dados sem criptografia de senha
         repository.save(usuario);
         return ResponseEntity.status(HttpStatus.CREATED).body("Usuário criado com sucesso");
     }
@@ -47,7 +42,7 @@ public class UsuariosController {
 
                 usuario.setNome(usuarioAtualizado.getNome());
                 usuario.setEmail(usuarioAtualizado.getEmail());
-                usuario.setSenha(passwordEncoder.encode(usuarioAtualizado.getSenha()));
+                usuario.setSenha(usuarioAtualizado.getSenha()); // Sem criptografia de senha
                 repository.save(usuario);
                 return ResponseEntity.ok("Usuário atualizado com sucesso");
             })
@@ -75,22 +70,4 @@ public class UsuariosController {
             .map(ResponseEntity::ok)
             .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
-    @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest) {
-        Optional<Usuarios> usuarioOpt = repository.findByEmail(loginRequest.getEmail());
-    
-        if (usuarioOpt.isPresent()) {
-            Usuarios usuario = usuarioOpt.get();
-    
-            // Comparar a senha fornecida com a senha criptografada armazenada
-            if (passwordEncoder.matches(loginRequest.getSenha(), usuario.getSenha())) {
-                return ResponseEntity.ok("Login realizado com sucesso!");
-            } else {
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Senha inválida!");
-            }
-        }
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Usuário não encontrado!");
-    }
-    
-    
 }
