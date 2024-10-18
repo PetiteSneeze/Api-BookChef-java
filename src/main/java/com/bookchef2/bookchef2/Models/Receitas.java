@@ -23,6 +23,8 @@ public class Receitas {
     private String nome;
 
     private String descricao;
+    private String ingredientes;
+    private String modoPreparo;
 
     private String imagemUrl;
 
