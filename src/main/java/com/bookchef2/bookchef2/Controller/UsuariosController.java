@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,6 +11,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.DeleteMapping;
 
 import com.bookchef2.bookchef2.Models.Usuarios;
 import com.bookchef2.bookchef2.Repository.UsuarioRepository;
@@ -37,6 +37,23 @@ public class UsuariosController {
         // Salvar o usuário no banco de dados sem criptografia de senha
         repository.save(usuario);
         return ResponseEntity.status(HttpStatus.CREATED).body("Usuário criado com sucesso");
+    }
+
+    // Login simples
+    @PostMapping("/login")
+    public ResponseEntity<String> login(@RequestBody Usuarios usuario) {
+        Optional<Usuarios> usuarioExistente = repository.findByEmail(usuario.getEmail());
+        if (usuarioExistente.isPresent()) {
+            Usuarios usuarioEncontrado = usuarioExistente.get();
+            // Verificar se a senha é a mesma
+            if (usuarioEncontrado.getSenha().equals(usuario.getSenha())) {
+                return ResponseEntity.ok("Login realizado com sucesso");
+            } else {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Senha incorreta");
+            }
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuário não encontrado");
+        }
     }
 
     // Atualizar o usuário e validar e-mails
