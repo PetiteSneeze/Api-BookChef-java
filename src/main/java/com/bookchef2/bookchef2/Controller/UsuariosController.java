@@ -41,13 +41,15 @@ public class UsuariosController {
 
     // Login simples
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody Usuarios usuario) {
+    public ResponseEntity<?> login(@RequestBody Usuarios usuario) {
         Optional<Usuarios> usuarioExistente = repository.findByEmail(usuario.getEmail());
+
         if (usuarioExistente.isPresent()) {
             Usuarios usuarioEncontrado = usuarioExistente.get();
             // Verificar se a senha é a mesma
             if (usuarioEncontrado.getSenha().equals(usuario.getSenha())) {
-                return ResponseEntity.ok("Login realizado com sucesso");
+                // Retornar os dados do usuário no body
+                return ResponseEntity.ok(usuarioEncontrado);
             } else {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Senha incorreta");
             }
@@ -60,19 +62,20 @@ public class UsuariosController {
     @PutMapping("/{id}")
     public ResponseEntity<String> atualizarUsuario(@PathVariable int id, @RequestBody Usuarios usuarioAtualizado) {
         return repository.findById(id)
-            .map(usuario -> {
-                Optional<Usuarios> usuarioExistente = repository.findByEmail(usuarioAtualizado.getEmail());
-                if (usuarioExistente.isPresent() && usuarioExistente.get().getId() != id) {
-                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("E-mail já está em uso por outro usuário");
-                }
+                .map(usuario -> {
+                    Optional<Usuarios> usuarioExistente = repository.findByEmail(usuarioAtualizado.getEmail());
+                    if (usuarioExistente.isPresent() && usuarioExistente.get().getId() != id) {
+                        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                                .body("E-mail já está em uso por outro usuário");
+                    }
 
-                usuario.setNome(usuarioAtualizado.getNome());
-                usuario.setEmail(usuarioAtualizado.getEmail());
-                usuario.setSenha(usuarioAtualizado.getSenha()); // Sem criptografia de senha
-                repository.save(usuario);
-                return ResponseEntity.ok("Usuário atualizado com sucesso");
-            })
-            .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+                    usuario.setNome(usuarioAtualizado.getNome());
+                    usuario.setEmail(usuarioAtualizado.getEmail());
+                    usuario.setSenha(usuarioAtualizado.getSenha()); // Sem criptografia de senha
+                    repository.save(usuario);
+                    return ResponseEntity.ok("Usuário atualizado com sucesso");
+                })
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
     }
 
     @DeleteMapping("/{id}")
@@ -93,7 +96,7 @@ public class UsuariosController {
     @GetMapping("/{id}")
     public ResponseEntity<Usuarios> buscarUsuarioPorId(@PathVariable int id) {
         return repository.findById(id)
-            .map(ResponseEntity::ok)
-            .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
 }
