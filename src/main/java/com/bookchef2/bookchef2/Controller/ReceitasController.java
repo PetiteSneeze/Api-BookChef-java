@@ -60,6 +60,7 @@ public class ReceitasController {
                     receita.setNome(receitaAtualizada.getNome());
                     receita.setDescricao(receitaAtualizada.getDescricao());
                     receita.setImagemUrl(receitaAtualizada.getImagemUrl());
+                    
                     return repository.save(receita);
                 })
                 .orElseThrow(() -> new RuntimeException("Receita não encontrada"));

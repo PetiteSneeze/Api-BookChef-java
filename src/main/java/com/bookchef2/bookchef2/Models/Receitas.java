@@ -21,11 +21,9 @@ public class Receitas {
     private Long id;
 
     private String nome;
-
     private String descricao;
     private String ingredientes;
     private String modoPreparo;
-
     private String imagemUrl;
 
     @JsonIgnore
