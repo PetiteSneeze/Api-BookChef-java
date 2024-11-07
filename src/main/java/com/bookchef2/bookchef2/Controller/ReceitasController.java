@@ -71,4 +71,9 @@ public class ReceitasController {
         return repository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Receita não encontrada"));
     }
+
+    @GetMapping("/tipo/{tipoReceitaId}")
+    public List<Receitas> getReceitasPorTipo(@PathVariable Long tipoReceitaId) {
+        return repository.findByTipo_Id(tipoReceitaId);
+    }
 }
